@@ -72,6 +72,19 @@ function setBoxes(secParam, hourParam) {
             }
         });
 
+        const bookKeys = Object.keys(books);
+
+        bookKeys.forEach((key) => {
+            if (courseCode.includes(key)) {
+                cols[i].innerHTML += "<br>";
+                const book = document.createElement("a");
+                book.href = books[key];
+                book.textContent = "Textbook";
+                book.target = "_blank";
+                cols[i].appendChild(book);
+            }
+        })
+
         if (hourParam > i) cols[i].style.color = finishedColor;
     }
 }
