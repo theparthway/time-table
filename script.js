@@ -158,5 +158,5 @@ for (let i=1;i<7;i++) {
     })
 }
 
-changeButton(null, section_buttons[1]);
+changeButton(null, section_buttons[2]);
 changeButton(null, day_buttons[day - 1]);
