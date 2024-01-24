@@ -36,7 +36,7 @@ let hour = ist.getHours();
 let minute = ist.getMinutes();
 let day = ist.getDay();
 let tt = tt1;
-let section = 1;
+let section = 2;
 let noOfSections = 14;
 const section_buttons = [];
 
@@ -158,5 +158,5 @@ for (let i=1;i<7;i++) {
     })
 }
 
-changeButton(null, section_buttons[2]);
+changeButton(null, section_buttons[section]);
 changeButton(null, day_buttons[day - 1]);
