@@ -17,7 +17,7 @@ for (let i=0;i<6;i++) {
     button.addEventListener('click', () => { changeDay(i) });
 }
 
-const times = ['8:25', '9:25', '10:35', '11:35', '12:35', '1:35', '2:35', '3:35', '4:35', '5:35'];
+const times = ['8:25-9:20', '9:25-10:20', '10:35-11:30', '11:35-12:30', '12:35-1:30', '1:35-2:30', '2:35-3:30', '3:35-4:30', '4:35-5:30', '5:35-6:30'];
 const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
 const section = window.location.pathname.replace("/", "").replace("/", "");
@@ -39,10 +39,10 @@ function changeDay(day) {
     const dayData = tt1.filter((line) => line[0] == section)[day];
 
     dayData.forEach((data, index) => {
-        if (data == section || data == "FREE" || data == "LUNCH") return;
+        if (data == section) return;
 
         const classDiv = document.createElement('div');
-        classDiv.className = 'flex place-content-between items-center my-1 w-full bg-purple-700 text-white p-4';
+        classDiv.className = 'flex place-content-between items-center my-1 w-full bg-purple-900 text-white p-4';
         // if ((hours[index] < date.getHours() || (hours[index] == date.getHours() && date.getMinutes() > 30)) && day == date.getDay() - 1) {
         //     classDiv.classList.add("bg-purple-500");
         // } else {
@@ -50,12 +50,12 @@ function changeDay(day) {
         // }
 
         const subjectP = document.createElement('p');
-        subjectP.className = 'text-l';
+        subjectP.className = 'text-l mr-3';
         subjectP.textContent = data;
 
         
         const timeP = document.createElement('p');
-        timeP.className = 'text-right';
+        timeP.className = 'text-right text-sm';
         timeP.textContent = times[index - 1];
         
         classDiv.appendChild(subjectP);
