@@ -1,162 +1,76 @@
-const container = document.querySelector(".container");
-const sectionButtons = document.querySelector(".section");
-const dayButtons = document.querySelector(".day");
-const yearButtons = document.querySelector(".year");
+const container = document.getElementById("container");
+const header = document.getElementById("header");
 
-const cols = [];
+const picked = "bg-blue-500";
+const notPicked = "bg-gray-400";
 
+const days = ["mon", "tue", "wed", "thu", "fri", "sat"];
+const date = new Date();
+console.log(date.getHours());
 
+const dayButtons = [];
+for (let i=0;i<6;i++) {
+    let button = document.getElementById(days[i]);
 
-const timings = ['8:25-9:20', '9:25-10:20', '10:35-11:30', '11:35-12:30', '12:35-1:30', '1:35-2:30', '2:35-3:30', '3:35-4:30', '4:35-5:30', '5:35-6:30'];
-const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const meals = ["Breakfast", "Lunch", "Dinner", "Snacks"];
+    dayButtons.push(button);
 
-for (let i=0;i<10;i++) {
-    let cell = document.createElement("div");
-    cols.push(cell);
-    container.appendChild(cell);
+    button.addEventListener('click', () => { changeDay(i) });
 }
 
+const times = ['8:25', '9:25', '10:35', '11:35', '12:35', '1:35', '2:35', '3:35', '4:35', '5:35'];
+const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
-var currentTime = new Date();
+const section = window.location.pathname.replace("/", "").replace("/", "");
+header.textContent = section;
 
-var currentOffset = currentTime.getTimezoneOffset();
+function changeDay(day) {
+    const container = document.getElementById("container");
+    container.innerHTML = "";
+    console.log("hello");
 
-var ISTOffset = 330;   // IST offset UTC +5:30 
+    for (let i=0;i<dayButtons.length;i++) {
+        dayButtons[i].classList.remove(picked);
+        dayButtons[i].classList.add(notPicked);
+    }
 
-var ist = new Date(currentTime.getTime() + (ISTOffset + currentOffset)*60000);
+    dayButtons[day].classList.remove(notPicked);
+    dayButtons[day].classList.add(picked);
 
+    const dayData = tt1.filter((line) => line[0] == section)[day];
 
-let finishedColor = "grey";
-let currentColor = "green";
+    dayData.forEach((data, index) => {
+        if (data == section || data == "FREE" || data == "LUNCH") return;
 
+        const classDiv = document.createElement('div');
+        classDiv.className = 'flex place-content-between items-center my-1 w-full bg-purple-700 text-white p-4';
+        // if ((hours[index] < date.getHours() || (hours[index] == date.getHours() && date.getMinutes() > 30)) && day == date.getDay() - 1) {
+        //     classDiv.classList.add("bg-purple-500");
+        // } else {
+        //     classDiv.classList.add("bg-purple-700");
+        // }
 
-let hour = ist.getHours();
-let minute = ist.getMinutes();
-let day = ist.getDay();
-let tt = tt1;
-let section = 2;
-let noOfSections = 14;
-const section_buttons = [];
+        const subjectP = document.createElement('p');
+        subjectP.className = 'text-l';
+        subjectP.textContent = data;
 
-function setBoxes(secParam, hourParam) {
-    for (let i=0;i<10;i++) {
-        let courseCode = tt[secParam][i + 1];
-
-        cols[i].innerHTML = "";
-        cols[i].innerHTML += timings[i];
         
-        cols[i].innerHTML += "<hr>";
-        cols[i].innerHTML += courseCode;
+        const timeP = document.createElement('p');
+        timeP.className = 'text-right';
+        timeP.textContent = times[index - 1];
+        
+        classDiv.appendChild(subjectP);
 
-        const courseKeys = Object.keys(courses);
-
-        courseKeys.forEach((key) => {
-            if (courseCode.includes(key)) {
-                cols[i].innerHTML += "<hr>";
-                cols[i].innerHTML += courses[key];
-            }
-        });
-
-        const linkKeys = Object.keys(links);
-
-        linkKeys.forEach((key) => {
-            if (courseCode.includes(key)) {
-                cols[i].innerHTML += "<hr>";
-                const link = document.createElement("a");
-                link.href = links[key];
-                link.textContent = "Link";
-                link.target = "_blank";
-                cols[i].appendChild(link);
-            }
-        });
-
-        const bookKeys = Object.keys(books);
-
-        bookKeys.forEach((key) => {
-            if (courseCode.includes(key)) {
-                cols[i].innerHTML += "<br>";
-                const book = document.createElement("a");
-                book.href = books[key];
-                book.textContent = "Textbook";
-                book.target = "_blank";
-                cols[i].appendChild(book);
-            }
-        })
-
-        if (hourParam > i) cols[i].style.color = finishedColor;
-    }
-}
-
-function setLabels() {
-    tt = tt1;
-    noOfSections = 14;
-    if (section_buttons.length != 0) {
-        for (let i=0;i<section_buttons.length;i++) {
-            section_buttons[i].textContent = tt[i][0];
+        if ((hours[index - 1] == date.getHours() && date.getMinutes() > 30) || (hours[index] == date.getHours() && date.getMinutes() <= 30)) {
+            const statusP = document.createElement('p');
+            statusP.className = 'text-right bg-purple-500 rounded-md px-2 mx-1';
+            statusP.textContent = "NOW";
+            classDiv.appendChild(statusP);
         }
-    }
-    if (day == 0) {
-        cols[5].textContent = "Sunday";
-        return;
-    }
-    let secParam = (day - 1) * noOfSections + section;
-    let hourParam = hours.indexOf(hour);
-    if (minute < 30 && hourParam != -1) hourParam -= 1;
 
+        classDiv.appendChild(timeP);
 
-    setBoxes(secParam, hourParam);
-
-
-    if ((hour == 18 && minute > 30) || (hour == 8 && minute < 30)) return;
-
-    if (hourParam != -1 && day == ist.getDay()) {
-        cols[hourParam].style.color = currentColor;
-    }
-
-    if (day != ist.getDay()) {
-        for (let i=0;i<9;i++) {
-            cols[i].style.color = finishedColor;
-        }
-    }
-}
-
-function changeButton(old_button, new_button) {
-    if (old_button) {
-        old_button.classList.remove("current");
-    }
-    new_button.classList.add("current");
-}
-
-setLabels();
-
-for (let i=0;i<noOfSections;i++) {
-    let button = document.createElement("button");
-    section_buttons.push(button);
-    button.appendChild(document.createTextNode(tt[i][0]));
-    sectionButtons.appendChild(button);
-    
-    button.addEventListener('click', function() {
-        changeButton(section_buttons[section], button);
-        section = i;
-        setLabels();
+        container.appendChild(classDiv);
     });
 }
 
-const day_buttons = [];
-for (let i=1;i<7;i++) {
-    let button = document.createElement("button");
-    day_buttons.push(button);
-    button.appendChild(document.createTextNode(days[i]));
-    dayButtons.appendChild(button);
-    
-    button.addEventListener('click', function() {
-        changeButton(day_buttons[day - 1], button);
-        day = i;
-        setLabels()
-    })
-}
-
-changeButton(null, section_buttons[section]);
-changeButton(null, day_buttons[day - 1]);
+changeDay(date.getDay() - 1);
