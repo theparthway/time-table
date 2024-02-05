@@ -17,7 +17,7 @@ for (let i=0;i<6;i++) {
     button.addEventListener('click', () => { changeDay(i) });
 }
 
-const times = ['8:25-9:20', '9:25-10:20', '10:35-11:30', '11:35-12:30', '12:35-1:30', '1:35-2:30', '2:35-3:30', '3:35-4:30', '4:35-5:30', '5:35-6:30'];
+const times = ['8:25 - 9:20', '9:25 - 10:20', '10:35 - 11:30', '11:35 - 12:30', '12:35 - 1:30', '1:35 - 2:30', '2:35 - 3:30', '3:35 - 4:30', '4:35 - 5:30', '5:35 - 6:30'];
 const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
 const section = window.location.pathname.replace("/", "").replace("/", "");
@@ -40,34 +40,38 @@ function changeDay(day) {
 
     dayData.forEach((data, index) => {
         if (data == section) return;
-
+        
         const classDiv = document.createElement('div');
-        classDiv.className = 'flex place-content-between items-center my-1 w-full bg-purple-900 text-white p-4';
-        // if ((hours[index] < date.getHours() || (hours[index] == date.getHours() && date.getMinutes() > 30)) && day == date.getDay() - 1) {
-        //     classDiv.classList.add("bg-purple-500");
-        // } else {
-        //     classDiv.classList.add("bg-purple-700");
-        // }
-
-        const subjectP = document.createElement('p');
-        subjectP.className = 'text-l mr-3';
-        subjectP.textContent = data;
-
-        
+        classDiv.className = 'flex flex-col text-center my-1 rounded-md text-white p-4 mx-2';
+        if (hours[index] < date.getHours() || (hours[index] == date.getHours() && date.getMinutes() > 30) && day == date.getDay() - 1) {
+            classDiv.classList.add("bg-purple-500");
+        } else {
+            classDiv.classList.add("bg-purple-900");
+        }
         const timeP = document.createElement('p');
-        timeP.className = 'text-right text-sm';
+        timeP.className = '';
         timeP.textContent = times[index - 1];
+
+        const hr = document.createElement('hr');
+        hr.className = 'my-2'
         
+        const subjectP = document.createElement('p');
+        subjectP.className = 'text-xl';
+        subjectP.textContent = data;
+        
+        
+        
+        classDiv.appendChild(timeP);
+        classDiv.appendChild(hr);
         classDiv.appendChild(subjectP);
 
-        if ((hours[index - 1] == date.getHours() && date.getMinutes() > 30) || (hours[index] == date.getHours() && date.getMinutes() <= 30)) {
-            const statusP = document.createElement('p');
-            statusP.className = 'text-right bg-purple-500 rounded-md px-2 mx-1';
-            statusP.textContent = "NOW";
-            classDiv.appendChild(statusP);
-        }
+        // if ((hours[index - 1] == date.getHours() && date.getMinutes() > 30) || (hours[index] == date.getHours() && date.getMinutes() <= 30)) {
+        //     const statusP = document.createElement('p');
+        //     statusP.className = 'text-right bg-purple-500 rounded-md px-2 mx-1';
+        //     statusP.textContent = "NOW";
+        //     classDiv.appendChild(statusP);
+        // }
 
-        classDiv.appendChild(timeP);
 
         container.appendChild(classDiv);
     });
