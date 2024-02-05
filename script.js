@@ -2,7 +2,7 @@ const container = document.getElementById("container");
 const header = document.getElementById("header");
 
 const picked = "bg-blue-500";
-const notPicked = "bg-gray-400";
+const notPicked = "bg-white";
 
 const days = ["mon", "tue", "wed", "thu", "fri", "sat"];
 const date = new Date();
@@ -42,18 +42,18 @@ function changeDay(day) {
         if (data == section) return;
         
         const classDiv = document.createElement('div');
-        classDiv.className = 'flex flex-col text-center my-1 rounded-md text-white p-4 mx-2';
+        classDiv.className = 'flex flex-col text-center my-1 rounded-md text-black p-4 mx-2';
         if (hours[index] < date.getHours() || (hours[index] == date.getHours() && date.getMinutes() > 30) && day == date.getDay() - 1) {
-            classDiv.classList.add("bg-purple-500");
+            classDiv.classList.add("bg-blue-300");
         } else {
-            classDiv.classList.add("bg-purple-900");
+            classDiv.classList.add("bg-blue-500");
         }
         const timeP = document.createElement('p');
         timeP.className = '';
         timeP.textContent = times[index - 1];
 
         const hr = document.createElement('hr');
-        hr.className = 'my-2'
+        hr.className = 'my-2';
         
         const subjectP = document.createElement('p');
         subjectP.className = 'text-xl';
