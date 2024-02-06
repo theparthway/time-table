@@ -42,11 +42,16 @@ function changeDay(day) {
         if (data == section) return;
         
         const classDiv = document.createElement('div');
-        classDiv.className = 'flex flex-col text-center my-1 rounded-md text-black p-4 mx-2';
+        classDiv.className = 'flex flex-col text-center my-2 rounded-md text-white p-4 mx-2';
+        if ((hours[index] == date.getHours() && date.getMinutes() > 30) || hours[index] == date.getHours() && date.getMinutes() <= 30) {
+            classDiv.classList.add("bg-teal-700");
+        }
         if (hours[index] < date.getHours() || (hours[index] == date.getHours() && date.getMinutes() > 30) && day == date.getDay() - 1) {
-            classDiv.classList.add("bg-blue-300");
+            classDiv.classList.add("bg-gray-600");
+            // classDiv.classList.remove("text-white");
+            // classDiv.classList.add("text-black");
         } else {
-            classDiv.classList.add("bg-blue-500");
+            classDiv.classList.add("bg-blue-800");
         }
         const timeP = document.createElement('p');
         timeP.className = '';
